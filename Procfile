@@ -1,1 +1,1 @@
-worker: sh target/bin/kvs07-tg-bot
+worker: sh target/bin/TelegramBot
