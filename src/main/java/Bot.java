@@ -81,10 +81,10 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     public String getBotUsername() {
-        return "kvs07WeatherBot.";
+        return System.getenv("botName");
     }
 
     public String getBotToken() {
-        return "1122003900:AAE-wr0OpWG184Uh2XobqZKbPL1I1pCu6Vs";
+        return "botToken";
     }
 }
