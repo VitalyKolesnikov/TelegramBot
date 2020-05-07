@@ -11,7 +11,7 @@ public class Weather {
     public static String getWeather(String message, Model model) {
         StringBuilder str = new StringBuilder();
         try {
-            URL url = new URL("http://api.openweathermap.org/data/2.5/weather?q=" + message + "&units=metric&appid=95dd4f93ba161d7b679e8009d4699913");
+            URL url = new URL("http://api.openweathermap.org/data/2.5/weather?q=" + message + "&units=metric&appid=" + System.getenv("weatherMapToken"));
             Scanner in = new Scanner((InputStream) url.getContent());
             while (in.hasNext()) {
                 str.append(in.nextLine());
