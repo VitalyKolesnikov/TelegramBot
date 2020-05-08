@@ -64,7 +64,7 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     public File getRandomPhoto() {
-        File[] files = new File(this.getClass().getResource("/photos/random").getFile()).listFiles();
+        File[] files = new File("/src/main/resources/photos/random").listFiles();
         Random rand = new Random();
         return files != null ? files[rand.nextInt(files.length)] : null;
     }
