@@ -1,3 +1,4 @@
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.BasicConfigurator;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -16,10 +17,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 public class Bot extends TelegramLongPollingBot {
@@ -64,9 +67,17 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     public File getRandomPhoto() {
-        File[] files = new File("/src/main/resources/photos/random").listFiles();
-        Random rand = new Random();
-        return files != null ? files[rand.nextInt(files.length)] : null;
+        File file;
+        try {
+            file = File.createTempFile("temp", "jpg");
+            List<String> list = Cloudinary.getAllPhotos();
+            String str = list.get(new Random().nextInt(list.size()));
+            FileUtils.copyURLToFile(new URL(str), file);
+            return file;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new File("temp.jpg");
+        }
     }
 
     public static String getRandomQuote() {
