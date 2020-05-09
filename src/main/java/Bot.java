@@ -17,13 +17,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 
 public class Bot extends TelegramLongPollingBot {
 
@@ -119,10 +119,12 @@ public class Bot extends TelegramLongPollingBot {
             String text = message.getText();
             switch (text) {
                 case "/help":
-                    sendMsg(message, "enter '/w city-name' to get weather report ");
+                    sendMsg(message,
+                            "'/w city-name' - weather report" + "\n" +
+                                 "'/rq' - random quote with photo");
                     break;
                 case "/about":
-                    sendMsg(message, "Telegram weather bot v1.0 by Vitaly Kolesnikov");
+                    sendMsg(message, "AlpVolkiBot by Vitaly Kolesnikov (c) 2020");
                     break;
                 case "/rq": {
                     sendPhoto(message, getRandomPhoto(), getRandomQuote());
