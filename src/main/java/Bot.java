@@ -1,4 +1,3 @@
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.BasicConfigurator;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -12,18 +11,12 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
+import quotes.QuoteHandler;
+import quotes.VK;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Random;
 
 public class Bot extends TelegramLongPollingBot {
 
@@ -66,52 +59,6 @@ public class Bot extends TelegramLongPollingBot {
         }
     }
 
-    public File getRandomPhoto() {
-        File file;
-        try {
-            file = File.createTempFile("temp", "jpg");
-            List<String> list = Cloudinary.getAllPhotos();
-            String str = list.get(new Random().nextInt(list.size()));
-            FileUtils.copyURLToFile(new URL(str), file);
-            return file;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new File("temp.jpg");
-        }
-    }
-
-    public static String getRandomQuote() {
-        StringBuilder sb = new StringBuilder();
-        URL url;
-        URLConnection urlConn = null;
-        try {
-            url = new URL("https://api.forismatic.com/api/1.0/?method=getQuote&key=457653&format=text&lang=ru");
-            urlConn = url.openConnection();
-            urlConn.addRequestProperty("User-Agent",
-                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try (InputStreamReader in = new InputStreamReader(Objects.requireNonNull(urlConn).getInputStream(),
-                Charset.defaultCharset())) {
-
-            urlConn.setReadTimeout(60 * 1000);
-            if (urlConn.getInputStream() != null) {
-                BufferedReader bufferedReader = new BufferedReader(in);
-                int cp;
-                while ((cp = bufferedReader.read()) != -1) {
-                    sb.append((char) cp);
-                }
-                bufferedReader.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Random quote";
-        }
-        return sb.toString();
-    }
-
     public void onUpdateReceived(Update update) {
         Model model = new Model();
         Message message = update.getMessage();
@@ -127,7 +74,7 @@ public class Bot extends TelegramLongPollingBot {
                     sendMsg(message, "AlpVolkiBot by Vitaly Kolesnikov (c) 2020");
                     break;
                 case "/rq": {
-                    sendPhoto(message, getRandomPhoto(), getRandomQuote());
+                    sendPhoto(message, Cloudinary.getRandomPhoto(), QuoteHandler.getRandomQuote());
                 }
                 default:
                     if (text.startsWith("/w ")) {
