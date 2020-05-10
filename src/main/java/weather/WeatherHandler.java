@@ -1,3 +1,5 @@
+package weather;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -6,9 +8,9 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Scanner;
 
-public class Weather {
+public class WeatherHandler {
 
-    public static String getWeather(String message, Model model) {
+    public static String getWeather(String message, WeatherBean weatherBean) {
         StringBuilder str = new StringBuilder();
         try {
             URL url = new URL("http://api.openweathermap.org/data/2.5/weather?q=" + message + "&units=metric&appid=" + System.getenv("WEATHERMAP_TOKEN"));
@@ -21,22 +23,22 @@ public class Weather {
         }
 
         JSONObject object = new JSONObject(str.toString());
-        model.setCityName(object.getString("name"));
+        weatherBean.setCityName(object.getString("name"));
 
         JSONObject main = object.getJSONObject("main");
-        model.setTemp((int) Math.round(main.getDouble("temp")));
-        model.setFeelsLikeTemp((int) Math.round(main.getDouble("feels_like")));
+        weatherBean.setTemp((int) Math.round(main.getDouble("temp")));
+        weatherBean.setFeelsLikeTemp((int) Math.round(main.getDouble("feels_like")));
 
         JSONObject sys = object.getJSONObject("sys");
-        model.setCountryName(sys.getString("country"));
+        weatherBean.setCountryName(sys.getString("country"));
 
         JSONArray getArray = object.getJSONArray("weather");
         for (int i = 0; i < getArray.length(); i++) {
             JSONObject obj = getArray.getJSONObject(i);
-            model.setMain((String) obj.get("main"));
-            model.setDescription((String) obj.get("description"));
+            weatherBean.setMain((String) obj.get("main"));
+            weatherBean.setDescription((String) obj.get("description"));
         }
 
-        return model.toString();
+        return weatherBean.toString();
     }
 }

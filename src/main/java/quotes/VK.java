@@ -23,13 +23,13 @@ public class VK {
     public static String getRandomQuote() {
         //42701798
         //46718830
-        List<String> list = getQuotes(42701798, 100);
+        List<String> list = getQuotes(42701798, 1000);
         return list.get(new Random().nextInt(list.size()));
     }
 
     public static List<String> getQuotes(int publicId, int count) {
         List<String> result = new ArrayList<>();
-        int offset = 1; // 1 to skip first post which is a pinned ad
+        int offset = 1; // 1 to skip first post which is often a pinned ad
         while (true) {
             try {
                 GetResponse getResponse = vk.wall().get(actor)

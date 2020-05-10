@@ -1,3 +1,5 @@
+package photo;
+
 import com.cloudinary.Api;
 import com.cloudinary.utils.ObjectUtils;
 import org.apache.commons.io.FileUtils;

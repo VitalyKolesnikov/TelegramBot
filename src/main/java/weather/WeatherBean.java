@@ -1,6 +1,8 @@
+package weather;
+
 import java.util.Collections;
 
-public class Model {
+public class WeatherBean {
     private String cityName;
     private String countryName;
     private int temp;
@@ -81,9 +83,9 @@ public class Model {
 
     @Override
     public String toString() {
-        return cityName + " / " + countryName + "\n" +
-                main + " (" + description + ")\n" +
-                temp + " \u2103 / " + "feels like " + feelsLikeTemp + " \u2103 " + "\n"
+        return getCityName() + " / " + getCountryName() + "\n" +
+                getMain() + " (" + getDescription() + ")\n" +
+                getTemp() + " \u2103 / " + "feels like " + getFeelsLikeTemp() + " \u2103 " + "\n"
                 ;
     }
 }

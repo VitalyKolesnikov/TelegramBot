@@ -11,8 +11,10 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
+import photo.Cloudinary;
 import quotes.QuoteHandler;
-import quotes.VK;
+import weather.WeatherBean;
+import weather.WeatherHandler;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -60,7 +62,7 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     public void onUpdateReceived(Update update) {
-        Model model = new Model();
+        WeatherBean weatherBean = new WeatherBean();
         Message message = update.getMessage();
         if (message != null && message.hasText()) {
             String text = message.getText();
@@ -78,7 +80,7 @@ public class Bot extends TelegramLongPollingBot {
                 }
                 default:
                     if (text.startsWith("/w ")) {
-                        sendMsg(message, Weather.getWeather(message.getText().replaceAll("/w ", ""), model));
+                        sendMsg(message, WeatherHandler.getWeather(message.getText().replaceAll("/w ", ""), weatherBean));
                     }
             }
         }
