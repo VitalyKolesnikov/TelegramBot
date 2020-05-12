@@ -1,6 +1,7 @@
 package photo;
 
 import com.cloudinary.Api;
+import com.cloudinary.api.ApiResponse;
 import com.cloudinary.utils.ObjectUtils;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
@@ -25,9 +26,10 @@ public class Cloudinary {
 
     static public File getRandomPhoto() {
         File file;
+        String key = new Random().nextInt(6) + String.valueOf(new Random().nextInt(10)); // 00 - 59
         try {
             file = File.createTempFile("temp", "jpg");
-            List<String> list = getAllPhotos();
+            List<String> list = searchPhotos(key);
             String str = list.get(new Random().nextInt(list.size()));
             FileUtils.copyURLToFile(new URL(str), file);
             return file;
@@ -35,6 +37,20 @@ public class Cloudinary {
             e.printStackTrace();
             return new File("temp.jpg");
         }
+    }
+
+    static public List<String> searchPhotos(String key) {
+        ArrayList<String> listRes = new ArrayList<>();
+        try {
+            ApiResponse resp = cloudinary.search()
+                    .expression("filename: '*" + key + "*'")
+                    .execute();
+            JSONArray arr2 = new JSONArray(new JSONArray(resp.values()).get(0).toString());
+            arr2.forEach(e -> listRes.add(((JSONObject) e).get("secure_url").toString()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listRes;
     }
 
     public static List<String> getAllPhotos() throws Exception {

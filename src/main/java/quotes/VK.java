@@ -23,7 +23,7 @@ public class VK {
     public static String getRandomQuote() {
         //42701798
         //46718830
-        List<String> list = getQuotes(42701798, 1000);
+        List<String> list = getQuotes(42701798, 400);
         return list.get(new Random().nextInt(list.size()));
     }
 
