@@ -71,7 +71,7 @@ public class Bot extends TelegramLongPollingBot {
             switch (text) {
                 case "/help":
                     sendMsg(message,
-                            "/w - погода (/w Moscow, /w Пермь)" + "\n" +
+                            "/w - погода (напр. /w Moscow, /w Пермь)" + "\n" +
                                  "/rq - цитатка" + "\n" +
                                  "/tor - принципы Торетто"
                     );
