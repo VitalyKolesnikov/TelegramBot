@@ -9,7 +9,7 @@ public class DB {
     final static String PASS = System.getenv("DB_PASS");
 
     public static String getTorettoRules() {
-        StringBuilder result = new StringBuilder("<h3>Принципы Доминика Торетто</h3>\n");
+        StringBuilder result = new StringBuilder("<b>Принципы Доминика Торетто</b>\n");
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
