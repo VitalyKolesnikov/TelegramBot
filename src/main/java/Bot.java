@@ -13,7 +13,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 import photo.Cloudinary;
 import quotes.QuoteHandler;
-import quotes.DB;
+import quotes.QuoteDAO;
 import weather.WeatherBean;
 import weather.WeatherHandler;
 
@@ -42,7 +42,7 @@ public class Bot extends TelegramLongPollingBot {
         sendMessage.setChatId(message.getChatId().toString());
         sendMessage.setReplyToMessageId(message.getMessageId());
         sendMessage.setText(text);
-        setButtons(sendMessage);
+        //setButtons(sendMessage);
         try {
             execute(sendMessage);
         } catch (TelegramApiException e) {
@@ -71,9 +71,9 @@ public class Bot extends TelegramLongPollingBot {
             switch (text) {
                 case "/help":
                     sendMsg(message,
-                            "/w - погода (напр. /w Moscow, /w Пермь)" + "\n" +
-                                 "/rq - цитатка" + "\n" +
-                                 "/tor - принципы Торетто"
+                            "/w - погода (например /w Moscow, /w Пермь)" + "\n" +
+                                    "/rq - цитатка" + "\n" +
+                                    "/tor - принципы Торетто"
                     );
                     break;
                 case "/about":
@@ -83,7 +83,7 @@ public class Bot extends TelegramLongPollingBot {
                     sendPhoto(message, Cloudinary.getRandomPhoto(), QuoteHandler.getRandomQuote());
                     break;
                 case "/tor":
-                    sendMsg(message, DB.getTorettoRules());
+                    sendMsg(message, QuoteDAO.getTorettoRules());
                 default:
                     if (text.startsWith("/w ")) {
                         sendMsg(message, WeatherHandler.getWeather(message.getText().replaceAll("/w ", ""), weatherBean));

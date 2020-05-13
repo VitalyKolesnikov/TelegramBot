@@ -1,22 +1,15 @@
 package quotes;
 
+import DB.ConnectionFactory;
+
 import java.sql.*;
 
-public class DB {
-
-    final static String URL = "jdbc:postgresql://" + System.getenv("DB_HOST") + ":5432/" + System.getenv("DB_NAME");
-    final static String USER = System.getenv("DB_USER");
-    final static String PASS = System.getenv("DB_PASS");
+public class QuoteDAO {
 
     public static String getTorettoRules() {
         StringBuilder result = new StringBuilder("<b>Принципы Доминика Торетто</b>\n");
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
 
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASS);
+        try (Connection conn = ConnectionFactory.getConnection() ;
              Statement stmt = conn.createStatement()) {
             ResultSet rs = stmt.executeQuery("SELECT text FROM toretto");
             while (rs.next()) {
@@ -25,27 +18,22 @@ public class DB {
                 result.append("\u261D");
                 result.append("\n");
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return result.toString();
     }
 
     public static String getRandomQuoteFromDb() {
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
 
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASS);
+        try (Connection conn = ConnectionFactory.getConnection();
              Statement stmt = conn.createStatement()) {
             ResultSet rs = stmt.executeQuery("SELECT * FROM pacanes ORDER BY RANDOM() LIMIT 1");
             if (rs.next()) {
                 return rs.getString("text");
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return "oops!";
     }
