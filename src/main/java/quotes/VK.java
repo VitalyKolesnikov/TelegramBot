@@ -29,7 +29,7 @@ public class VK {
 
     public static List<String> getQuotes(int publicId, int count) {
         List<String> result = new ArrayList<>();
-        int offset = 1; // 1 to skip first post which is often a pinned ad
+        int offset = 1; // 1 to skip the first post which is often a pinned ad
         while (true) {
             try {
                 GetResponse getResponse = vk.wall().get(actor)

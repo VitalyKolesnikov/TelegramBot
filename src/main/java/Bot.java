@@ -13,6 +13,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 import photo.Cloudinary;
 import quotes.QuoteHandler;
+import quotes.DB;
 import weather.WeatherBean;
 import weather.WeatherHandler;
 
@@ -37,6 +38,7 @@ public class Bot extends TelegramLongPollingBot {
     public void sendMsg(Message message, String text) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.enableMarkdown(false);
+        sendMessage.enableHtml(true);
         sendMessage.setChatId(message.getChatId().toString());
         sendMessage.setReplyToMessageId(message.getMessageId());
         sendMessage.setText(text);
@@ -69,15 +71,19 @@ public class Bot extends TelegramLongPollingBot {
             switch (text) {
                 case "/help":
                     sendMsg(message,
-                            "'/w city-name' - weather report" + "\n" +
-                                 "'/rq' - random quote with photo");
+                            "/w - погода (/w Moscow, /w Пермь)" + "\n" +
+                                 "/rq - цитатка" + "\n" +
+                                 "/tor - принципы Торетто"
+                    );
                     break;
                 case "/about":
                     sendMsg(message, "AlpVolkiBot by Vitaly Kolesnikov (c) 2020");
                     break;
-                case "/rq": {
+                case "/rq":
                     sendPhoto(message, Cloudinary.getRandomPhoto(), QuoteHandler.getRandomQuote());
-                }
+                    break;
+                case "/tor":
+                    sendMsg(message, DB.getTorettoRules());
                 default:
                     if (text.startsWith("/w ")) {
                         sendMsg(message, WeatherHandler.getWeather(message.getText().replaceAll("/w ", ""), weatherBean));

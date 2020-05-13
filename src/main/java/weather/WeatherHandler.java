@@ -19,7 +19,7 @@ public class WeatherHandler {
                 str.append(in.nextLine());
             }
         } catch (IOException e) {
-            return "City not found";
+            return "Город не найден";
         }
 
         JSONObject object = new JSONObject(str.toString());
