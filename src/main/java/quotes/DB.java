@@ -30,4 +30,23 @@ public class DB {
         }
         return result.toString();
     }
+
+    public static String getRandomQuoteFromDb() {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASS);
+             Statement stmt = conn.createStatement()) {
+            ResultSet rs = stmt.executeQuery("SELECT * FROM pacanes ORDER BY RANDOM() LIMIT 1");
+            if (rs.next()) {
+                return rs.getString("text");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return "oops!";
+    }
 }
