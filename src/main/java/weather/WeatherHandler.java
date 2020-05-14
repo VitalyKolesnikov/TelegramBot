@@ -39,6 +39,6 @@ public class WeatherHandler {
             weatherBean.setDescription((String) obj.get("description"));
         }
 
-        return weatherBean.toString();
+        return weatherBean.toString() + "\n";
     }
 }

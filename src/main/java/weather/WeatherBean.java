@@ -15,7 +15,7 @@ public class WeatherBean {
     }
 
     public void setCityName(String cityName) {
-        this.cityName = cityName;
+        this.cityName = "<b>" + cityName + "</b>";
     }
 
     public String getCountryName() {

@@ -82,6 +82,11 @@ public class Bot extends TelegramLongPollingBot {
                 sendMsg(message, QuoteDAO.getTorettoRules());
             } else if (text.startsWith("/w ")) {
                 sendMsg(message, WeatherHandler.getWeather(message.getText().replaceAll("/w ", ""), weatherBean));
+            } else if (text.startsWith("/w@")) {
+                sendMsg(message, WeatherHandler.getWeather("Moscow", weatherBean) +
+                        WeatherHandler.getWeather("Rostov-on-Don", weatherBean) +
+                        WeatherHandler.getWeather("Perm", weatherBean) +
+                        WeatherHandler.getWeather("Tyumen", weatherBean));
             }
         }
     }
