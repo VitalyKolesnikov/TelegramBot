@@ -28,13 +28,13 @@ public class QuoteDAO {
 
         try (Connection conn = ConnectionFactory.getConnection();
              Statement stmt = conn.createStatement()) {
-            ResultSet rs = stmt.executeQuery("SELECT * FROM pacanes ORDER BY RANDOM() LIMIT 1");
+            ResultSet rs = stmt.executeQuery("SELECT text FROM pacanes ORDER BY RANDOM() LIMIT 1");
             if (rs.next()) {
                 return rs.getString("text");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return "oops!";
+        return "Lorem ipsum dolor";
     }
 }

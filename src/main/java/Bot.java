@@ -37,10 +37,10 @@ public class Bot extends TelegramLongPollingBot {
 
     public void sendMsg(Message message, String text) {
         SendMessage sendMessage = new SendMessage();
-        sendMessage.enableMarkdown(false);
+        //sendMessage.enableMarkdown(false);
         sendMessage.enableHtml(true);
         sendMessage.setChatId(message.getChatId().toString());
-        sendMessage.setReplyToMessageId(message.getMessageId());
+        //sendMessage.setReplyToMessageId(message.getMessageId());
         sendMessage.setText(text);
         //setButtons(sendMessage);
         try {
@@ -68,26 +68,20 @@ public class Bot extends TelegramLongPollingBot {
         Message message = update.getMessage();
         if (message != null && message.hasText()) {
             String text = message.getText();
-            switch (text) {
-                case "/help":
-                    sendMsg(message,
-                            "/w - погода (например /w Moscow, /w Пермь)" + "\n" +
-                                    "/rq - цитатка" + "\n" +
-                                    "/tor - принципы Торетто"
-                    );
-                    break;
-                case "/about":
-                    sendMsg(message, "AlpVolkiBot by Vitaly Kolesnikov (c) 2020");
-                    break;
-                case "/rq":
-                    sendPhoto(message, Cloudinary.getRandomPhoto(), QuoteHandler.getRandomQuote());
-                    break;
-                case "/tor":
-                    sendMsg(message, QuoteDAO.getTorettoRules());
-                default:
-                    if (text.startsWith("/w ")) {
-                        sendMsg(message, WeatherHandler.getWeather(message.getText().replaceAll("/w ", ""), weatherBean));
-                    }
+            if (text.startsWith("/help")) {
+                sendMsg(message,
+                        "/w - погода (например /w Moscow, /w Пермь)" + "\n" +
+                                "/rq - цитатка" + "\n" +
+                                "/tor - принципы Торетто"
+                );
+            } else if (text.startsWith("/about")) {
+                sendMsg(message, "AlpVolkiBot by Vitaly Kolesnikov (c) 2020");
+            } else if (text.startsWith("/rq")) {
+                sendPhoto(message, Cloudinary.getRandomPhoto(), QuoteHandler.getRandomQuote());
+            } else if (text.startsWith("/tor")) {
+                sendMsg(message, QuoteDAO.getTorettoRules());
+            } else if (text.startsWith("/w ")) {
+                sendMsg(message, WeatherHandler.getWeather(message.getText().replaceAll("/w ", ""), weatherBean));
             }
         }
     }
