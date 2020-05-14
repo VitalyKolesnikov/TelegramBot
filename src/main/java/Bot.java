@@ -71,7 +71,7 @@ public class Bot extends TelegramLongPollingBot {
             if (text.startsWith("/help")) {
                 sendMsg(message,
                         "/w - погода (например /w Moscow, /w Пермь)" + "\n" +
-                                "/rq - цитатка" + "\n" +
+                                "/rq - пацанская цитатка" + "\n" +
                                 "/tor - принципы Торетто"
                 );
             } else if (text.startsWith("/about")) {
