@@ -1,3 +1,9 @@
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.BasicConfigurator;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -12,12 +18,13 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 import photo.Cloudinary;
-import quotes.QuoteHandler;
 import quotes.QuoteDAO;
+import quotes.QuoteHandler;
 import weather.WeatherBean;
 import weather.WeatherHandler;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,6 +89,8 @@ public class Bot extends TelegramLongPollingBot {
                 sendMsg(message, QuoteDAO.getTorettoRules());
             } else if (text.startsWith("/w ")) {
                 sendMsg(message, WeatherHandler.getWeather(message.getText().replaceAll("/w ", ""), weatherBean));
+            } else if (text.startsWith("/ssm ")) {
+                sendBotMessage(text.replaceAll("/ssm ", ""));
             } else if (text.startsWith("/w")) {
                 sendMsg(message, WeatherHandler.getWeather("Moscow", weatherBean) +
                         WeatherHandler.getWeather("Rostov-on-Don", weatherBean) +
@@ -106,6 +115,21 @@ public class Bot extends TelegramLongPollingBot {
 
         keyboardRowList.add(keyboardFirstRow);
         replyKeyboardMarkup.setKeyboard(keyboardRowList);
+    }
+
+    public void sendBotMessage(String text) {
+        HttpClient httpclient = HttpClients.createDefault();
+        HttpPost httppost = new HttpPost("https://api.telegram.org/bot" + System.getenv("BOT_TOKEN") + "/sendMessage");
+
+        List<NameValuePair> params = new ArrayList<>(2);
+        params.add(new BasicNameValuePair("chat_id", System.getenv("SSM_CHAT_ID")));
+        params.add(new BasicNameValuePair("text", text));
+        try {
+            httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+            httpclient.execute(httppost);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getBotUsername() {
